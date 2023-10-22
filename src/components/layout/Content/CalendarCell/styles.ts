@@ -33,3 +33,10 @@ export const HolidayName = styled('p')`
   text-align: center;
   color: red;
 `;
+
+export const Content = styled('div')`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px;
+`;

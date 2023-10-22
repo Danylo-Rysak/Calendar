@@ -12,3 +12,5 @@ export const months = [
   'November',
   'December',
 ];
+
+export const taskColors = ['red', 'green', 'yellow', 'blue'];
