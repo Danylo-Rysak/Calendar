@@ -111,3 +111,18 @@ export const getCalendarWithNewTask = (
       ? { ...calendarDay, tasks: [...calendarDay.tasks, newTask] }
       : calendarDay
   );
+
+export const getCalendarWithoutDeletedTask = (
+  calendar: Array<CalendarDay>,
+  dayId: string,
+  taskId: string
+) =>
+  calendar.map((calendarDay) => {
+    return calendarDay.id === dayId
+      ? { ...calendarDay, tasks: getNewFilteredTasks(calendarDay.tasks, taskId) }
+      : calendarDay;
+
+    function getNewFilteredTasks(tasks: Array<Task>, taskId: string): Array<Task> {
+      return tasks.filter((task) => task.taskId !== taskId);
+    }
+  });

@@ -52,7 +52,7 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
         ) : (
           <Styled.Content>
             {tasks.map((task) => (
-              <TaskItem key={task?.taskId} task={task} />
+              <TaskItem key={task?.taskId} task={task} dayId={calendarDay.id} />
             ))}
           </Styled.Content>
         )}
