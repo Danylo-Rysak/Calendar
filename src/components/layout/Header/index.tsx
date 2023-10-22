@@ -6,7 +6,7 @@ import saveAs from 'file-saver';
 import SelectFilter from './SelectFilter';
 import SearchTask from './SearchTask';
 // Functions
-import { getMonthByNumber } from 'utils/functions';
+import { getMonthByNumber } from 'core/functions';
 // Styles
 import * as Styled from './styles';
 
