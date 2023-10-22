@@ -1,7 +1,8 @@
 // Libs
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 // Components
 import Modal from 'components/shared/Modal';
 import MultipleSelect from './MultiiSelect';
@@ -27,18 +28,27 @@ const AddTaskModal: FC<AddTaskModalProps> = ({ dayId, isOpen, onClose }) => {
 
   const formik = useFormik<Task>({
     initialValues: {
-      date: null,
+      date: new Date(),
       label: 'New task',
       colors: ['yellow'],
-      taskId: '',
+      taskId: 'sjdksndn',
     },
     onSubmit: (values) => {
-      const newTask = { newTask: values, dayId: dayId };
+      console.log(values);
+      const newTask = {
+        newTask: values,
+        dayId: dayId,
+      };
       dispatch(addTask(newTask));
       formik.resetForm();
       onClose();
     },
   });
+
+  useEffect(() => {
+    formik.setFieldValue('date', new Date());
+    formik.setFieldValue('taskId', uuidv4());
+  }, [isOpen]);
 
   const { values, handleChange, handleSubmit, isValid } = formik;
 
