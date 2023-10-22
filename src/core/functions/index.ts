@@ -1,5 +1,5 @@
 // Interfaces
-import { CalendarDay, Holiday } from 'store/calendar-service/interfaces';
+import { CalendarDay, Holiday, Task } from 'store/calendar-service/interfaces';
 // Constants
 import { months } from 'core/contants';
 
@@ -100,3 +100,14 @@ export const getCalendarCellValue = (
 
 export const getTaskAmountInfo = (allTasksLength: number): string =>
   `${allTasksLength}/${3} ${allTasksLength === 1 ? 'task' : 'tasks'}`;
+
+export const getCalendarWithNewTask = (
+  calendar: Array<CalendarDay>,
+  dayId: string,
+  newTask: Task
+) =>
+  calendar.map((calendarDay) =>
+    calendarDay.id === dayId
+      ? { ...calendarDay, tasks: [...calendarDay.tasks, newTask] }
+      : calendarDay
+  );

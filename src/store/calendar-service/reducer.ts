@@ -2,6 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 // Actions
 import { fetchCalendarData } from './actions';
+// Operations
+import { addTaskOperation } from './operations';
 // Interfaces
 import { CalendarValues } from './interfaces';
 
@@ -18,7 +20,9 @@ const initialState: CalendarValues = {
 const calendarStore = createSlice({
   name: 'calendar',
   initialState,
-  reducers: {},
+  reducers: {
+    addTask: addTaskOperation,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCalendarData.pending, (state) => {
@@ -36,6 +40,6 @@ const calendarStore = createSlice({
   },
 });
 
-export const {} = calendarStore.actions;
+export const { addTask } = calendarStore.actions;
 
 export default calendarStore.reducer;
