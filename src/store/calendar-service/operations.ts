@@ -4,9 +4,11 @@ import {
   getCalendarWithEditedTask,
   getCalendarWithNewTask,
   getCalendarWithoutDeletedTask,
+  getNewCalendarAfterDragAndDrop,
+  getNewCalendarAfterTaskSwipe,
 } from 'core/functions';
 // Interfaces
-import { CalendarValues, Task } from './interfaces';
+import { CalendarValues, CalendarDay, Task } from './interfaces';
 
 export const addTaskOperation = (
   state: CalendarValues,
@@ -39,6 +41,40 @@ export const deleteTaskOperation = (
     state.calendarData.data,
     dayId,
     taskId
+  );
+  state.calendarData = { data: newCalendar, total: newCalendar.length };
+};
+
+export const dragAndDropTaskOperation = (
+  state: CalendarValues,
+  action: PayloadAction<{
+    pickedCalendarDay: CalendarDay;
+    newPickedDay: CalendarDay;
+    previousCalendarDay: CalendarDay;
+    newPreviousDay: CalendarDay;
+  }>
+) => {
+  const { pickedCalendarDay, newPickedDay, previousCalendarDay, newPreviousDay } =
+    action.payload;
+  const newCalendar = getNewCalendarAfterDragAndDrop(
+    state.calendarData.data,
+    pickedCalendarDay,
+    newPickedDay,
+    previousCalendarDay,
+    newPreviousDay
+  );
+  state.calendarData = { data: newCalendar, total: newCalendar.length };
+};
+
+export const dragAndDropTaskInDayOperation = (
+  state: CalendarValues,
+  action: PayloadAction<{ newCurrentCalendarDay: CalendarDay; swapCalendarDayId: string }>
+) => {
+  const { newCurrentCalendarDay, swapCalendarDayId } = action.payload;
+  const newCalendar = getNewCalendarAfterTaskSwipe(
+    state.calendarData.data,
+    newCurrentCalendarDay,
+    swapCalendarDayId
   );
   state.calendarData = { data: newCalendar, total: newCalendar.length };
 };

@@ -141,3 +141,89 @@ export const getCalendarWithEditedTask = (
       return tasks.map((task) => (task.taskId === newTask.taskId ? newTask : task));
     }
   });
+
+export const getNewCalendarAfterDragAndDrop = (
+  calendarData: Array<CalendarDay>,
+  pickedCalendarDay: CalendarDay,
+  newPickedDay: CalendarDay,
+  previousCalendarDay: CalendarDay,
+  newPreviousDay: CalendarDay
+) =>
+  calendarData.map((calendarDay) =>
+    calendarDay.id === pickedCalendarDay.id
+      ? newPickedDay
+      : calendarDay.id === previousCalendarDay?.id
+      ? newPreviousDay
+      : calendarDay
+  );
+
+export const getNewCalendarAfterTaskSwipe = (
+  calendarData: Array<CalendarDay>,
+  newCurrentCalendarDay: CalendarDay,
+  swapCalendarDayId: string
+) =>
+  calendarData.map((calendarDay) =>
+    calendarDay.id === swapCalendarDayId ? newCurrentCalendarDay : calendarDay
+  );
+
+export const getCalendarDayById = (
+  calendarData: Array<CalendarDay>,
+  calendarDayId: string
+): CalendarDay | undefined => calendarData.find((day) => day.id === calendarDayId);
+
+export const getIsValidDragAndDrop = (
+  pickedCalendarDay: CalendarDay | undefined,
+  pickedTask: Task | undefined,
+  previousCalendarDay: CalendarDay | undefined,
+  calendarDayId: string
+): boolean =>
+  !!(
+    pickedCalendarDay &&
+    pickedCalendarDay.tasks.length < 3 &&
+    pickedTask &&
+    previousCalendarDay &&
+    previousCalendarDay.id !== calendarDayId
+  ) && !pickedCalendarDay.holidayInfo;
+
+export const getNewPreviousDay = (previousCalendarDay: CalendarDay, taskId: string) => ({
+  ...previousCalendarDay,
+  tasks: previousCalendarDay?.tasks.filter((task) => task.taskId !== taskId),
+});
+
+export const getNewPickedDay = (pickedCalendarDay: CalendarDay, pickedTask: Task) => ({
+  ...pickedCalendarDay,
+  tasks: [...pickedCalendarDay.tasks, pickedTask],
+});
+
+export const getNewCalendarDayAfterTaskSwipe = (
+  currentCalendarDay: CalendarDay,
+  taskIndex: number,
+  swipeTaskIndex: number
+) => ({
+  ...currentCalendarDay,
+  tasks: currentCalendarDay.tasks.map((task, index) =>
+    index === taskIndex
+      ? currentCalendarDay.tasks[swipeTaskIndex]
+      : index === swipeTaskIndex
+      ? currentCalendarDay.tasks[taskIndex]
+      : task
+  ),
+});
+
+export const getIsValidTaskSwipe = (
+  currentCalendarDay: CalendarDay | undefined,
+  taskIndex: number | undefined,
+  swipeTaskIndex: number | undefined,
+  targetTaskId: string,
+  swapTaskId: string
+) =>
+  currentCalendarDay &&
+  typeof taskIndex === 'number' &&
+  typeof swipeTaskIndex === 'number' &&
+  targetTaskId !== swapTaskId &&
+  !currentCalendarDay.holidayInfo;
+
+export const getTaskIndexById = (
+  tasks: Array<Task> | undefined,
+  taskId: string
+): number | undefined => tasks?.findIndex((task) => task.taskId === taskId);
