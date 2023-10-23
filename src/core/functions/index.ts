@@ -100,7 +100,7 @@ export const getCalendarCellValue = (
 };
 
 export const getTaskAmountInfo = (allTasksLength: number): string =>
-  `${allTasksLength}/${3} ${allTasksLength === 1 ? 'task' : 'tasks'}`;
+  `${allTasksLength || 0}/${3} ${allTasksLength === 1 ? 'task' : 'tasks'}`;
 
 export const getCalendarWithNewTask = (
   calendar: Array<CalendarDay>,
