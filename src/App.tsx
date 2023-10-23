@@ -1,11 +1,13 @@
 // Libs
 import { FC, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 // Components
 import Header from 'components/layout/Header';
 import Main from 'components/layout/Content';
-import { fetchCalendarData } from './store/calendar-service/actions';
-import { DispatchType } from './store/root';
-import { useDispatch } from 'react-redux';
+// Store
+import { DispatchType } from 'store/root';
+// Actions
+import { fetchCalendarData } from 'store/calendar-service/actions';
 
 const App: FC = () => {
   const dispatch: DispatchType = useDispatch();
