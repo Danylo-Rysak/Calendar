@@ -1,5 +1,8 @@
 // Libs
 import { FC, useState } from 'react';
+// Components
+import TaskItem from '../TaskItem';
+import AddTaskModal from './AddTaskModal';
 // Functions
 import { getTaskAmountInfo } from 'core/functions';
 // Icons
@@ -8,8 +11,6 @@ import add from 'assets/icons/add.svg';
 import { CalendarDay } from 'store/calendar-service/interfaces';
 // Styles
 import * as Styled from './styles';
-import AddTaskModal from './AddTaskModal';
-import TaskItem from '../TaskItem';
 
 interface CalendarCellProps {
   calendarDay: CalendarDay;
@@ -33,6 +34,7 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
   return (
     <>
       <AddTaskModal
+        title="Add task"
         dayId={calendarDay.id}
         isOpen={isOpenAddTaskModal}
         onClose={toggleOpenAddTaskModalClick(false)}

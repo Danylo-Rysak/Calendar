@@ -1,15 +1,14 @@
 // Libs
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useFormik } from 'formik';
 import { Button, Input } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 // Components
 import Modal from 'components/shared/Modal';
 import MultipleSelect from 'components/shared/MultiiSelect';
 // Store
 import { DispatchType } from 'store/root';
-import { addTask } from 'store/calendar-service/reducer';
+import { editTask } from 'store/calendar-service/reducer';
 // Constants
 import { taskColors } from 'core/contants';
 // Interfaces
@@ -17,43 +16,36 @@ import { Task } from 'store/calendar-service/interfaces';
 // Styles
 import * as Styled from './styles';
 
-interface AddTaskModalProps {
+interface EditTaskModalProps {
   dayId: string;
+  task: Task;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const AddTaskModal: FC<AddTaskModalProps> = ({ dayId, isOpen, onClose }) => {
+const EditTaskModal: FC<EditTaskModalProps> = ({ dayId, task, isOpen, onClose }) => {
   const dispatch: DispatchType = useDispatch();
-
   const formik = useFormik<Task>({
     initialValues: {
-      date: null,
-      label: 'New task',
-      colors: ['yellow'],
-      taskId: '',
+      date: task.date,
+      label: task.label,
+      colors: task.colors,
+      taskId: task.taskId,
     },
     onSubmit: (values) => {
-      const newTask = {
-        newTask: values,
+      const editedTask = {
+        editedTask: values,
         dayId: dayId,
       };
-      dispatch(addTask(newTask));
-
-      formik.resetForm();
+      dispatch(editTask(editedTask));
       onClose();
     },
   });
 
-  const { values, handleChange, handleSubmit, setFieldValue, isValid } = formik;
-
-  useEffect(() => {
-    setFieldValue('date', new Date());
-    setFieldValue('taskId', uuidv4());
-  }, [isOpen]);
+  const { values, handleChange, handleSubmit, isValid } = formik;
 
   return (
-    <Modal title="Add task" isOpen={isOpen} onClose={onClose}>
+    <Modal title="Edit task" isOpen={isOpen} onClose={onClose}>
       <Styled.Form onSubmit={handleSubmit}>
         <Input
           id="label"
@@ -69,7 +61,7 @@ const AddTaskModal: FC<AddTaskModalProps> = ({ dayId, isOpen, onClose }) => {
         />
         <Styled.ButtonGroups>
           <Button disabled={!isValid} variant="contained" type="submit">
-            Create
+            Edit
           </Button>
           <Button onClick={onClose} variant="outlined">
             Close
@@ -80,4 +72,4 @@ const AddTaskModal: FC<AddTaskModalProps> = ({ dayId, isOpen, onClose }) => {
   );
 };
 
-export default AddTaskModal;
+export default EditTaskModal;
