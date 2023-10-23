@@ -2,7 +2,7 @@
 import { FC, useState, DragEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // Components
-import TaskItem from '../TaskItem';
+import TaskItem from './TaskItem';
 import AddTaskModal from './AddTaskModal';
 // Functions
 import {
@@ -94,19 +94,24 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
         isOpen={isOpenAddTaskModal}
         onClose={toggleOpenAddTaskModalClick(false)}
       />
+
       <Styled.CalendarCells
         onDragOver={onCalendarCellDragOverHandler}
         onDrop={onCalendarCellDropHandler}
       >
         <Styled.Header isCurrentDay={isCurrentDay}>
           <p>{monthDay}</p>
+
           {holidayInfo ? <p>Holiday</p> : <p>{tasksAmount}</p>}
-          <Styled.AddTask
+
+          <Styled.AddTaskButton
+            disabled={!!holidayInfo || tasks.length === 3}
             onClick={toggleOpenAddTaskModalClick(true)}
-            src={add}
-            alt="addIcon"
-          />
+          >
+            <Styled.AddTask src={add} alt="addIcon" />
+          </Styled.AddTaskButton>
         </Styled.Header>
+
         {holidayInfo ? (
           <Styled.HolidayName>{holidayInfo.localName}</Styled.HolidayName>
         ) : (

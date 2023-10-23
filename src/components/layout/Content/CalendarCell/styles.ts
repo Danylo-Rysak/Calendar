@@ -22,13 +22,22 @@ export const Header = styled('div')<{ isCurrentDay: boolean }>`
         `}
 `;
 
+export const AddTaskButton = styled('button')`
+  background: none;
+  border: none;
+  cursor: pointer;
+  &:disabled {
+    cursor: default;
+  }
+`;
+
 export const AddTask = styled('img')`
   width: 22px;
   height: 22px;
-  cursor: pointer;
 `;
 
 export const HolidayName = styled('p')`
+  margin-top: 30px;
   font-size: 22px;
   text-align: center;
   color: red;
