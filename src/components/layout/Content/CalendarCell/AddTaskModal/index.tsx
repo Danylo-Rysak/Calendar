@@ -11,7 +11,7 @@ import MultipleSelect from 'components/shared/MultiiSelect';
 import { DispatchType } from 'store/root';
 import { addTask } from 'store/calendar-service/reducer';
 // Constants
-import { taskColors } from 'core/contants';
+import { taskColors } from 'core/constants';
 // Interfaces
 import { Task } from 'store/calendar-service/interfaces';
 // Styles

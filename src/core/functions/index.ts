@@ -1,7 +1,8 @@
 // Interfaces
 import { CalendarDay, Holiday, Task } from 'store/calendar-service/interfaces';
 // Constants
-import { months } from 'core/contants';
+import { COLOR, LABEL, months } from 'core/constants';
+import { FilterOption } from '../types';
 
 export const getDaysInCurrentMonth = (month: number): Array<Date> => {
   const currentDate = new Date();
@@ -227,3 +228,32 @@ export const getTaskIndexById = (
   tasks: Array<Task> | undefined,
   taskId: string
 ): number | undefined => tasks?.findIndex((task) => task.taskId === taskId);
+
+export const getFormattedText = (text: string): string => text.trim().toLowerCase();
+
+export const getNewFilteredTasks = (
+  tasks: Array<Task>,
+  filterOption: FilterOption,
+  filterValue: string | undefined
+): Array<Task> => {
+  if (!filterValue) return tasks;
+
+  switch (filterOption) {
+    case LABEL: {
+      return tasks.filter((task) =>
+        getFormattedText(task.label).includes(getFormattedText(filterValue))
+      );
+    }
+
+    case COLOR: {
+      return tasks.filter((task) => {
+        const filterColors = getFormattedText(filterValue).split(',');
+        return task.colors.some((color) => filterColors.includes(color));
+      });
+    }
+  }
+};
+
+export const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};

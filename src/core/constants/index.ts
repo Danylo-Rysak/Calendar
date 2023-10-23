@@ -1,3 +1,5 @@
+import { FilterOption } from 'core/types';
+
 export const months = [
   'January',
   'February',
@@ -14,3 +16,7 @@ export const months = [
 ];
 
 export const taskColors = ['red', 'green', 'yellow', 'blue'];
+
+export const LABEL = 'label';
+export const COLOR = 'color';
+export const filterOptions: Array<FilterOption> = [LABEL, COLOR];
