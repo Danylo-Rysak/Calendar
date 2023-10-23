@@ -40,7 +40,7 @@ const calendarStore = createSlice({
       })
       .addCase(fetchCalendarData.fulfilled, (state, { payload }) => {
         state.isFetching = false;
-        state.calendarData = payload.data;
+        state.calendarData.data = payload.data;
         state.calendarData.total = payload.data.length;
       })
       .addCase(fetchCalendarData.rejected, (state, { error }) => {

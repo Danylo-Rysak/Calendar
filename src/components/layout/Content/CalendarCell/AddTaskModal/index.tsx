@@ -39,7 +39,6 @@ const AddTaskModal: FC<AddTaskModalProps> = ({ dayId, isOpen, onClose }) => {
         dayId: dayId,
       };
       dispatch(addTask(newTask));
-
       formik.resetForm();
       onClose();
     },

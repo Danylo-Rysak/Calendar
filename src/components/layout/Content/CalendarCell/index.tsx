@@ -52,7 +52,7 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
   const currentDay = currentDate.getDate();
   const isCurrentDay = currentDay === monthDay;
 
-  const tasksAmount = getTaskAmountInfo(tasks.length);
+  const tasksAmount = getTaskAmountInfo(tasks?.length);
 
   const dispatch: DispatchType = useDispatch();
 
@@ -116,7 +116,7 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
           {holidayInfo ? <p>Holiday</p> : <p>{tasksAmount}</p>}
 
           <Styled.AddTaskButton
-            disabled={!!holidayInfo || tasks.length === 3}
+            disabled={!!holidayInfo || tasks?.length === 3}
             onClick={toggleOpenAddTaskModalClick(true)}
           >
             <Styled.AddTask src={add} alt="addIcon" />
@@ -127,9 +127,10 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
           <Styled.HolidayName>{holidayInfo.localName}</Styled.HolidayName>
         ) : (
           <Styled.Content>
-            {filteredTasks.map((task) => (
-              <TaskItem key={task?.taskId} task={task} calendarDay={calendarDay} />
-            ))}
+            {filteredTasks &&
+              filteredTasks.map((task) => (
+                <TaskItem key={task?.taskId} task={task} calendarDay={calendarDay} />
+              ))}
           </Styled.Content>
         )}
       </Styled.CalendarCells>
