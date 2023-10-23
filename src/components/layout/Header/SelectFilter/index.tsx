@@ -1,32 +1,39 @@
 // Libs
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
+// Functions
+import { capitalizeFirstLetter } from 'core/functions';
 
-const SelectOption: FC = () => {
-  const [filterName, setFilterName] = useState('');
+interface SelectProps {
+  options: Array<string>;
+  label: string;
+  handleChange: (el: string) => void;
+}
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setFilterName(event.target.value);
+const SelectFilter: FC<SelectProps> = ({ options, label, handleChange }) => {
+  const onChangeHandler = (event: SelectChangeEvent) => {
+    handleChange(event.target.value);
   };
 
   return (
-    <div>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-        <InputLabel id="select-filter-name">Filter by</InputLabel>
-        <Select
-          labelId="select-filter-name"
-          id="select"
-          value={filterName}
-          onChange={handleChange}
-          label="Filter by"
-        >
-          <MenuItem value={10}>Label</MenuItem>
-          <MenuItem value={20}>Color</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+      <InputLabel id="select-filter-name">{label}</InputLabel>
+
+      <Select
+        labelId="select-filter-name"
+        id="select"
+        label={label}
+        onChange={onChangeHandler}
+      >
+        {options.map((option, index) => (
+          <MenuItem value={option} key={index}>
+            {capitalizeFirstLetter(option)}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 
-export default SelectOption;
+export default SelectFilter;

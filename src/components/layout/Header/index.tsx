@@ -1,18 +1,29 @@
-import { FC } from 'react';
-import { Button } from '@mui/material';
+import { ChangeEvent, FC, useContext } from 'react';
+import { Button, Input } from '@mui/material';
 import html2canvas from 'html2canvas';
 import saveAs from 'file-saver';
 // Components
 import SelectFilter from './SelectFilter';
-import SearchTask from './SearchTask';
 // Functions
 import { getMonthByNumber } from 'core/functions';
+// Types
+import { FilterOption, WrapperContext } from 'core/types';
+// Constants
+import { filterOptions } from 'core/constants';
 // Styles
 import * as Styled from './styles';
 
-const tasks = ['JSNDJS', 'SJNA', 'ASKJNALKJ', 'ASJNA', 'AJLCAL'];
-
 const Header: FC = () => {
+  const { filterValue, setFilterOption, setFilterValue } = useContext(WrapperContext);
+
+  const handleFilterOptionChange = (filterValue: string) => {
+    setFilterOption(filterValue as FilterOption);
+  };
+
+  const handleFilterValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFilterValue(event.target.value);
+  };
+
   const currentDate = new Date();
 
   const currentMonth = getMonthByNumber(currentDate.getMonth());
@@ -41,7 +52,7 @@ const Header: FC = () => {
         URL.revokeObjectURL(href);
       }
     } catch (error) {
-      alert(error);
+      throw error;
     }
   };
 
@@ -58,8 +69,17 @@ const Header: FC = () => {
 
   return (
     <Styled.Header>
-      <SelectFilter />
-      <SearchTask tasks={tasks} />
+      <SelectFilter
+        options={filterOptions}
+        label="Filter by"
+        handleChange={handleFilterOptionChange}
+      />
+      <Input
+        value={filterValue}
+        onChange={handleFilterValueChange}
+        placeholder="Enter filter value"
+        id="filterInput"
+      />
       <h3>{currentDateInfo}</h3>
       <Button onClick={downloadCalendarAsJson} variant="outlined">
         Download as JSON

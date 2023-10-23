@@ -122,7 +122,7 @@ const TaskItem: FC<TaskItemProps> = ({ task, calendarDay }) => {
             <Styled.TaskColor key={index} color={color} />
           ))}
         </Styled.ColorsGroup>
-        <p>{label}</p>
+        <Styled.Label>{label}</Styled.Label>
         <Styled.ButtonGroup>
           <Button
             onClick={toggleOpenDeleteTaskModal(true)}

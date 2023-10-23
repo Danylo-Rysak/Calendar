@@ -1,5 +1,5 @@
 // Libs
-import { FC, useState, DragEvent } from 'react';
+import { FC, useState, DragEvent, useEffect, useContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // Components
 import TaskItem from './TaskItem';
@@ -8,6 +8,7 @@ import AddTaskModal from './AddTaskModal';
 import {
   getCalendarDayById,
   getIsValidDragAndDrop,
+  getNewFilteredTasks,
   getNewPickedDay,
   getNewPreviousDay,
   getTaskAmountInfo,
@@ -21,6 +22,8 @@ import { getCalendarDataSelector } from 'store/calendar-service/selectors';
 import add from 'assets/icons/add.svg';
 // Interfaces
 import { CalendarDay } from 'store/calendar-service/interfaces';
+// Types
+import { WrapperContext } from 'core/types';
 // Styles
 import * as Styled from './styles';
 
@@ -29,13 +32,21 @@ interface CalendarCellProps {
 }
 
 const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
+  const { monthDay, tasks, holidayInfo } = calendarDay;
+
+  const [filteredTasks, setFilteredTasks] = useState(tasks);
   const [isOpenAddTaskModal, setIsOpenAddTaskModal] = useState<boolean>(false);
+
+  const { filterOption, filterValue } = useContext(WrapperContext);
+
+  useEffect(() => {
+    const newFilteredTasks = getNewFilteredTasks(tasks, filterOption, filterValue);
+    setFilteredTasks(newFilteredTasks);
+  }, [tasks, filterOption, filterValue]);
 
   const toggleOpenAddTaskModalClick = (isOpen: boolean) => () => {
     setIsOpenAddTaskModal(isOpen);
   };
-
-  const { monthDay, tasks, holidayInfo } = calendarDay;
 
   const currentDate = new Date();
   const currentDay = currentDate.getDate();
@@ -116,7 +127,7 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
           <Styled.HolidayName>{holidayInfo.localName}</Styled.HolidayName>
         ) : (
           <Styled.Content>
-            {tasks.map((task) => (
+            {filteredTasks.map((task) => (
               <TaskItem key={task?.taskId} task={task} calendarDay={calendarDay} />
             ))}
           </Styled.Content>

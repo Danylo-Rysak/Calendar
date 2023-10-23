@@ -19,6 +19,10 @@ export const TaskColor = styled('div')<{ color: string }>`
   border-radius: 20px;
 `;
 
+export const Label = styled('p')`
+  margin: 0;
+`;
+
 export const ColorsGroup = styled('div')`
   display: flex;
   gap: 5px;
