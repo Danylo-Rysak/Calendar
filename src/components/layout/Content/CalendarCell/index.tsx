@@ -1,10 +1,22 @@
 // Libs
-import { FC, useState } from 'react';
+import { FC, useState, DragEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 // Components
 import TaskItem from '../TaskItem';
 import AddTaskModal from './AddTaskModal';
 // Functions
-import { getTaskAmountInfo } from 'core/functions';
+import {
+  getCalendarDayById,
+  getIsValidDragAndDrop,
+  getNewPickedDay,
+  getNewPreviousDay,
+  getTaskAmountInfo,
+} from 'core/functions';
+// Store
+import { DispatchType } from 'store/root';
+import { dragAndDropTask } from 'store/calendar-service/reducer';
+// Selectors
+import { getCalendarDataSelector } from 'store/calendar-service/selectors';
 // Icons
 import add from 'assets/icons/add.svg';
 // Interfaces
@@ -31,15 +43,61 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
 
   const tasksAmount = getTaskAmountInfo(tasks.length);
 
+  const dispatch: DispatchType = useDispatch();
+
+  const calendarData = useSelector(getCalendarDataSelector);
+
+  const handleDragAndDropUpdate = (taskId: string, calendarDayId: string) => {
+    const pickedCalendarDay = getCalendarDayById(calendarData.data, calendarDayId);
+    const previousCalendarDay = calendarData.data.find((calendarDay) =>
+      calendarDay.tasks.find((task) => task.taskId === taskId)
+    );
+    const pickedTask = previousCalendarDay?.tasks.find(
+      (calendarTask) => calendarTask.taskId === taskId
+    );
+
+    const isValidDragAndDrop = getIsValidDragAndDrop(
+      pickedCalendarDay,
+      pickedTask,
+      previousCalendarDay,
+      calendarDayId
+    );
+
+    if (pickedCalendarDay && pickedTask && previousCalendarDay && isValidDragAndDrop) {
+      const newPreviousDay = getNewPreviousDay(previousCalendarDay, taskId);
+      const newPickedDay = getNewPickedDay(pickedCalendarDay, pickedTask);
+
+      const dragAndDropData = {
+        pickedCalendarDay,
+        newPickedDay,
+        previousCalendarDay,
+        newPreviousDay,
+      };
+
+      dispatch(dragAndDropTask(dragAndDropData));
+    }
+  };
+
+  const onCalendarCellDragOverHandler = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
+  const onCalendarCellDropHandler = (event: DragEvent<HTMLDivElement>) => {
+    const id = event.dataTransfer.getData('id');
+    handleDragAndDropUpdate(id, calendarDay.id);
+  };
+
   return (
     <>
       <AddTaskModal
-        title="Add task"
         dayId={calendarDay.id}
         isOpen={isOpenAddTaskModal}
         onClose={toggleOpenAddTaskModalClick(false)}
       />
-      <Styled.CalendarCells>
+      <Styled.CalendarCells
+        onDragOver={onCalendarCellDragOverHandler}
+        onDrop={onCalendarCellDropHandler}
+      >
         <Styled.Header isCurrentDay={isCurrentDay}>
           <p>{monthDay}</p>
           {holidayInfo ? <p>Holiday</p> : <p>{tasksAmount}</p>}
@@ -54,7 +112,7 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
         ) : (
           <Styled.Content>
             {tasks.map((task) => (
-              <TaskItem key={task?.taskId} task={task} dayId={calendarDay.id} />
+              <TaskItem key={task?.taskId} task={task} calendarDay={calendarDay} />
             ))}
           </Styled.Content>
         )}
