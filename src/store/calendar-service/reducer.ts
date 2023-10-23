@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // Actions
 import { fetchCalendarData } from './actions';
 // Operations
-import { addTaskOperation, deleteTaskOperation } from './operations';
+import { addTaskOperation, deleteTaskOperation, editTaskOperation } from './operations';
 // Interfaces
 import { CalendarValues } from './interfaces';
 
@@ -22,6 +22,7 @@ const calendarStore = createSlice({
   initialState,
   reducers: {
     addTask: addTaskOperation,
+    editTask: editTaskOperation,
     deleteTask: deleteTaskOperation,
   },
   extraReducers: (builder) => {
@@ -41,6 +42,6 @@ const calendarStore = createSlice({
   },
 });
 
-export const { addTask, deleteTask } = calendarStore.actions;
+export const { addTask, editTask, deleteTask } = calendarStore.actions;
 
 export default calendarStore.reducer;

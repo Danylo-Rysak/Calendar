@@ -1,12 +1,13 @@
 // Libs
 import { FC, useState } from 'react';
-// Components
 import { Button } from '@mui/material';
+// Components
+import DeleteTaskModal from './DeleteTaskModal';
+import EditTaskModal from './EditTaskModal';
 // Interfaces
 import { Task } from 'store/calendar-service/interfaces';
 // Styles
 import * as Styled from './styles';
-import DeleteTaskModal from './DeleteTaskModal';
 
 interface TaskItemProps {
   task: Task;
@@ -15,9 +16,14 @@ interface TaskItemProps {
 
 const TaskItem: FC<TaskItemProps> = ({ task, dayId }) => {
   const [isOpenDeleteTaskModal, setIsOpenDeleteTaskModal] = useState<boolean>(false);
+  const [isOpenEditTaskModal, setIsOpenEditTaskModal] = useState<boolean>(false);
 
   const toggleOpenDeleteTaskModal = (isOpen: boolean) => () => {
     setIsOpenDeleteTaskModal(isOpen);
+  };
+
+  const toggleOpenEditTaskModalClick = (isOpen: boolean) => () => {
+    setIsOpenEditTaskModal(isOpen);
   };
 
   const { label, colors, taskId } = task;
@@ -29,6 +35,12 @@ const TaskItem: FC<TaskItemProps> = ({ task, dayId }) => {
         onClose={toggleOpenDeleteTaskModal(false)}
         taskId={taskId}
         dayId={dayId}
+      />
+      <EditTaskModal
+        task={task}
+        dayId={dayId}
+        isOpen={isOpenEditTaskModal}
+        onClose={toggleOpenEditTaskModalClick(false)}
       />
       <Styled.TaskItem>
         <Styled.ColorsGroup>
@@ -46,7 +58,12 @@ const TaskItem: FC<TaskItemProps> = ({ task, dayId }) => {
           >
             Delete
           </Button>
-          <Button style={{ height: '30px' }} color="warning" variant="contained">
+          <Button
+            onClick={toggleOpenEditTaskModalClick(true)}
+            style={{ height: '30px' }}
+            color="warning"
+            variant="contained"
+          >
             Edit
           </Button>
         </Styled.ButtonGroup>

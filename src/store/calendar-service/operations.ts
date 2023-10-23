@@ -1,6 +1,10 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 // Actions
-import { getCalendarWithNewTask, getCalendarWithoutDeletedTask } from 'core/functions';
+import {
+  getCalendarWithEditedTask,
+  getCalendarWithNewTask,
+  getCalendarWithoutDeletedTask,
+} from 'core/functions';
 // Interfaces
 import { CalendarValues, Task } from './interfaces';
 
@@ -10,6 +14,19 @@ export const addTaskOperation = (
 ) => {
   const { dayId, newTask } = action.payload;
   const newCalendar = getCalendarWithNewTask(state.calendarData.data, dayId, newTask);
+  state.calendarData = { data: newCalendar, total: newCalendar.length };
+};
+
+export const editTaskOperation = (
+  state: CalendarValues,
+  action: PayloadAction<{ dayId: string; editedTask: Task }>
+) => {
+  const { dayId, editedTask } = action.payload;
+  const newCalendar = getCalendarWithEditedTask(
+    state.calendarData.data,
+    dayId,
+    editedTask
+  );
   state.calendarData = { data: newCalendar, total: newCalendar.length };
 };
 
