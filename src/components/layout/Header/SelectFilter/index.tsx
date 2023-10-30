@@ -22,9 +22,9 @@ const SelectFilter: FC<SelectProps> = ({ options, label, handleChange }) => {
 
       <Select
         labelId="select-filter-name"
+        defaultValue={options[0]}
         id="select"
         label={label}
-        value={options[0]}
         onChange={onChangeHandler}
       >
         {options.map((option, index) => (
