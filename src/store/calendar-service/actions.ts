@@ -10,7 +10,6 @@ import { holidaysFetch } from 'core/api';
 export const fetchCalendarData = createAsyncThunk(CalendarGetData, async () => {
   try {
     const localCalendarData = localStorage.getItem('calendar');
-
     if (localCalendarData) {
       const parsedCalendarData = JSON.parse(localCalendarData);
       return { data: parsedCalendarData.data };

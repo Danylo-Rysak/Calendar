@@ -1,6 +1,8 @@
-import { Holiday } from '../../store/calendar-service/interfaces';
-import { HolidayResponse } from './interfaces';
+// Constants
 import { baseUrl } from './contants';
+// Interfaces
+import { Holiday } from 'store/calendar-service/interfaces';
+import { HolidayResponse } from './interfaces';
 
 export const holidaysFetch = async (): Promise<Array<Holiday> | undefined> => {
   const data = await fetch(baseUrl, { method: 'GET' });

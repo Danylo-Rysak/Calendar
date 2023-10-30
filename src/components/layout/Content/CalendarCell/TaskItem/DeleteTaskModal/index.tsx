@@ -24,7 +24,6 @@ const DeleteTaskModal: FC<DeleteTaskModalProps> = ({
   dayId,
 }) => {
   const dispatch: DispatchType = useDispatch();
-  console.log(taskId);
   const handleDeleteTaskClick = () => {
     const currentTask = { dayId: dayId, taskId: taskId };
     dispatch(deleteTask(currentTask));

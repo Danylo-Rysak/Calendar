@@ -21,7 +21,7 @@ import { getCalendarDataSelector } from 'store/calendar-service/selectors';
 // Icons
 import add from 'assets/icons/add.svg';
 // Interfaces
-import { CalendarDay } from 'store/calendar-service/interfaces';
+import { CalendarDay, Task } from 'store/calendar-service/interfaces';
 // Types
 import { WrapperContext } from 'core/types';
 // Styles
@@ -32,9 +32,11 @@ interface CalendarCellProps {
 }
 
 const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
+  const [isFiltering, setIsFiltering] = useState<boolean>(true);
+
   const { monthDay, tasks, holidayInfo } = calendarDay;
 
-  const [filteredTasks, setFilteredTasks] = useState(tasks);
+  const [filteredTasks, setFilteredTasks] = useState<Array<Task>>(tasks);
   const [isOpenAddTaskModal, setIsOpenAddTaskModal] = useState<boolean>(false);
 
   const { filterOption, filterValue } = useContext(WrapperContext);
@@ -42,6 +44,7 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
   useEffect(() => {
     const newFilteredTasks = getNewFilteredTasks(tasks, filterOption, filterValue);
     setFilteredTasks(newFilteredTasks);
+    setIsFiltering(false);
   }, [tasks, filterOption, filterValue]);
 
   const toggleOpenAddTaskModalClick = (isOpen: boolean) => () => {
@@ -127,7 +130,7 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
           <Styled.HolidayName>{holidayInfo.localName}</Styled.HolidayName>
         ) : (
           <Styled.Content>
-            {filteredTasks &&
+            {!isFiltering &&
               filteredTasks.map((task) => (
                 <TaskItem key={task?.taskId} task={task} calendarDay={calendarDay} />
               ))}
