@@ -44,7 +44,7 @@ const AddTaskModal: FC<AddTaskModalProps> = ({ dayId, isOpen, onClose }) => {
     },
   });
 
-  const { values, handleChange, handleSubmit, setFieldValue, isValid } = formik;
+  const { values, handleChange, handleSubmit, setFieldValue } = formik;
 
   useEffect(() => {
     setFieldValue('date', new Date());
@@ -67,7 +67,11 @@ const AddTaskModal: FC<AddTaskModalProps> = ({ dayId, isOpen, onClose }) => {
           options={taskColors}
         />
         <Styled.ButtonGroups>
-          <Button disabled={!isValid} variant="contained" type="submit">
+          <Button
+            disabled={values.label === '' || values.colors.length === 0}
+            variant="contained"
+            type="submit"
+          >
             Create
           </Button>
           <Button onClick={onClose} variant="outlined">

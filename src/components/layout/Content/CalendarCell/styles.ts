@@ -3,7 +3,8 @@ import { css } from '@emotion/react';
 
 export const CalendarCells = styled('div')`
   width: 230px;
-  height: 320px;
+  min-height: 320px;
+  height: auto;
   background: cornsilk;
 `;
 
@@ -40,6 +41,7 @@ export const HolidayName = styled('p')`
   margin-top: 30px;
   font-size: 22px;
   text-align: center;
+  padding: 0 20px;
   color: red;
 `;
 
