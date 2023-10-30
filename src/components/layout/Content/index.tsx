@@ -25,7 +25,7 @@ const Content: FC = () => {
 
   return (
     <Styled.Content id="calendar">
-      {calendarData.data.map((calendarDay) => (
+      {calendarData?.data.map((calendarDay) => (
         <CalendarCell key={uuidv4()} calendarDay={calendarDay} />
       ))}
     </Styled.Content>
