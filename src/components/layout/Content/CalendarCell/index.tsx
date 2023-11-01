@@ -26,6 +26,7 @@ import { CalendarDay, Task } from 'store/calendar-service/interfaces';
 import { WrapperContext } from 'core/types';
 // Styles
 import * as Styled from './styles';
+import { monthMap } from './helpers';
 
 interface CalendarCellProps {
   calendarDay: CalendarDay;
@@ -34,7 +35,7 @@ interface CalendarCellProps {
 const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
   const [isFiltering, setIsFiltering] = useState<boolean>(true);
 
-  const { monthDay, tasks, holidayInfo } = calendarDay;
+  const { monthDay, tasks, holidayInfo, date, month } = calendarDay;
 
   const [filteredTasks, setFilteredTasks] = useState<Array<Task>>(tasks);
   const [isOpenAddTaskModal, setIsOpenAddTaskModal] = useState<boolean>(false);
@@ -51,9 +52,12 @@ const CalendarCell: FC<CalendarCellProps> = ({ calendarDay }) => {
     setIsOpenAddTaskModal(isOpen);
   };
 
+  console.log(date);
+
   const currentDate = new Date();
+  const currentMonth = currentDate.getMonth();
   const currentDay = currentDate.getDate();
-  const isCurrentDay = currentDay === monthDay;
+  const isCurrentDay = currentDay === monthDay && currentMonth === monthMap[month];
 
   const tasksAmount = getTaskAmountInfo(tasks?.length);
 
